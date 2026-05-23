@@ -9,8 +9,16 @@ Right now, I am focusing on building my logic and understanding the basics of th
 ## 📂 Repository Contents
 
 * **`Basics/`** - This folder contains fundamental C++ programs.
+  * `Largest_of_3_numbers.cpp`: A program to find a Largest number from 3 numbers.
   * `even_odd.cpp`: A program to check if a number is even or odd.
   * `factorial.cpp`: A program to find the factorial of a number.
+  * `swap_two_numbers.cpp`: A program to swap two numbers.
+
+* **`Loops/`** 
+  * `prime_number.cpp`:A program to chack if a number is prime.
+  * `sum_n_natural_numbers.cpp`: A program to find sum of natural numbers.
+  * `sum_of_even_numbers.cpp`:A program find the sum of even numbers.
+
 
 ---
 
