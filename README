@@ -19,6 +19,12 @@ Right now, I am focusing on building my logic and understanding the basics of th
   * `sum_n_natural_numbers.cpp`: A program to find sum of natural numbers.
   * `sum_of_even_numbers.cpp`:A program find the sum of even numbers.
 
+* **`Pattern Printing/`**
+  * `Right_traingle_pattern.cpp: A program to print right traingle pattern.
+  * `Reverse_traimgle_pattern.cpp: A program to print reverse traingle pattern.
+  * `floyds_traingle_pattern.cpp: A program to print floyds traingle pattern.
+  * `Pyramid_pattern.cpp: A program to print pyramid pattern.
+
 
 ---
 
