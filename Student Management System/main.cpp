@@ -1,16 +1,19 @@
-//**************************-----------:-:-:-:-:-:-:-:-:Student Management System:-:-:-:-:-:-:-:-:------------**************************************************
+//***********************************-----------:-:-:-:-:-:-:-:-: Student Management System :-:-:-:-:-:-:-:-:------------**************************************************
+
 #include<iostream>
 #include<string>
-#include <vector>
-#include <fstream>
-#include <algorithm>
+#include<vector>
+#include<fstream>
+#include<algorithm>
+#include<iomanip>
+
 using namespace std;
 
 class Student {
 public:
-   int id;
-   string name;
-   int age;
+    int id;
+    string name;
+    int age;
 };
 
 void saveToFile(vector<Student> &students);
@@ -48,20 +51,27 @@ void addStudent(vector<Student> &students) {
     students.push_back(s);
     saveToFile(students);
 
-    cout << "Student added successfully!\n";
+    cout << "Student added successfully!" << endl;
 }
 
 void displayStudent(const vector<Student> &students) {
     if(students.empty()) {
-    cout << "No students found!" << endl;
-    return;
-}
-    for(int i = 0; i < students.size(); i++){
+        cout << "No students found!" << endl;
+        return;
+    }
 
-        cout << "\nStudent " << i + 1 << " Details\n";
-        cout << "ID: " << students[i].id << endl;
-        cout << "Name: " << students[i].name << endl;
-        cout << "Age: " << students[i].age << endl;
+    cout << left
+         << setw(6) << "ID"
+         << setw(17) << "Name"
+         << "Age" << endl;
+
+    cout << "------------------------------------------" << endl;
+
+    for(int i = 0; i < students.size(); i++) {
+        cout << left
+             << setw(6) << students[i].id
+             << setw(17) << students[i].name
+             << students[i].age << endl;
     }
 }
 
@@ -70,10 +80,11 @@ void searchStudent(const vector<Student> &students) {
 
     cout << "Enter Student ID to search: ";
     cin >> id;
+
     if(id <= 0) {
-    cout << "Invalid Student ID!" << endl;
-    return;
-}
+        cout << "Invalid Student ID!" << endl;
+        return;
+    }
 
     bool found = false;
 
@@ -98,6 +109,7 @@ void updateStudent(vector<Student> &students) {
 
     cout << "Enter Student ID to update: ";
     cin >> id;
+
     if(id <= 0) {
         cout << "Invalid Student ID!" << endl;
         return;
@@ -113,13 +125,13 @@ void updateStudent(vector<Student> &students) {
             cin.ignore();
             getline(cin, students[i].name);
 
-           cout << "Enter New Age: ";
-           cin >> students[i].age;
-           
-           if(students[i].age <= 0) {
-               cout << "Invalid age!" << endl;
-               return;
-           }
+            cout << "Enter New Age: ";
+            cin >> students[i].age;
+
+            if(students[i].age <= 0) {
+                cout << "Invalid age!" << endl;
+                return;
+            }
 
             cout << "Student updated successfully!" << endl;
 
@@ -138,10 +150,11 @@ void deleteStudent(vector<Student> &students) {
 
     cout << "Enter Student ID to delete: ";
     cin >> id;
+
     if(id <= 0) {
-    cout << "Invalid Student ID!" << endl;
-    return;
-}
+        cout << "Invalid Student ID!" << endl;
+        return;
+    }
 
     for(int i = 0; i < students.size(); i++) {
         if(students[i].id == id) {
@@ -164,13 +177,21 @@ void deleteStudent(vector<Student> &students) {
 
 void saveToFile(vector<Student> &students) {
     ofstream file("students.txt");
- if(!file) {
-    cout << "Unable to save students!" << endl;
-    return;
-}
+
+    if(!file) {
+        cout << "Unable to save students!" << endl;
+        return;
+    }
+    file << left
+         << setw(6) << "ID"
+         << setw(17) << "Name"
+         << "Age" << endl;
+
+    file << "------------------------------------------" << endl;
+
     for(int i = 0; i < students.size(); i++) {
-        file << students[i].id << " | "
-             << students[i].name << " | "
+        file << students[i].id << "   "
+             << students[i].name << "   "
              << students[i].age << endl;
     }
 
@@ -179,37 +200,58 @@ void saveToFile(vector<Student> &students) {
 
 void loadFromFile(vector<Student> &students) {
     ifstream file("students.txt");
+
     if(!file) {
-    cout << "Unable to open students file!" << endl;
-    return;
-}
+        return;
+    }
 
     Student s;
     string line;
 
+    // Skip heading
+    getline(file, line);
+
+    // Skip separator line
+    getline(file, line);
+
     while(getline(file, line)) {
-         if(line.empty()) {
+
+        if(line.empty()) {
             continue;
         }
 
-        size_t pos1 = line.find('|');
-        size_t pos2 = line.find('|', pos1 + 1);
-        if(pos1 == string::npos || pos2 == string::npos) {
-        continue;
-    }
+        // Read ID
+        size_t pos1 = line.find(' ');
+        if(pos1 == string::npos) {
+            continue;
+        }
 
         s.id = stoi(line.substr(0, pos1));
 
-        s.name = line.substr(pos1 + 1, pos2 - pos1 - 1);
+        // Remove spaces before name
+        size_t nameStart = line.find_first_not_of(' ', pos1);
 
-        s.age = stoi(line.substr(pos2 + 1));
+        // Find spaces before age
+        size_t ageStart = line.find_last_of(' ');
+
+        if(nameStart == string::npos || ageStart == string::npos) {
+            continue;
+        }
+
+        s.name = line.substr(nameStart, ageStart - nameStart);
+
+        // Remove extra spaces from name
+        while(!s.name.empty() && s.name.back() == ' ') {
+            s.name.pop_back();
+        }
+
+        s.age = stoi(line.substr(ageStart + 1));
 
         students.push_back(s);
     }
 
     file.close();
 }
-
 void sortStudents(vector<Student> &students) {
     sort(students.begin(), students.end(), [](Student a, Student b) {
         return a.id < b.id;
@@ -226,7 +268,7 @@ int main() {
 
     while(true) {
 
-        cout << "\n ------Student Management System-------\n";
+        cout << "\n------ Student Management System ------\n";
         cout << "1. Add Student\n";
         cout << "2. Display Student\n";
         cout << "3. Search Student\n";
