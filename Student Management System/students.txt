@@ -1,3 +1,6 @@
-101|Student One|20
-102|Student Two|21
-103|Student Three|19
+
+ID    Name             Age
+------------------------------------------
+101   Student one   19
+102   Student two   18
+103   Student three   21
